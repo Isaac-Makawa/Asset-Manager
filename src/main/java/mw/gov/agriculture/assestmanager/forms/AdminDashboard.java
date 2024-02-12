@@ -12,7 +12,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import mw.gov.agriculture.assestmanager.helpers.ComboBoxItem;
+import mw.gov.agriculture.assestmanager.models.AssetsCount;
 import mw.gov.agriculture.assestmanager.models.Institution;
+import mw.gov.agriculture.assestmanager.models.LoginSummary;
 import mw.gov.agriculture.assestmanager.models.SystemAdmin;
 import mw.gov.agriculture.assestmanager.models.User;
 
@@ -42,6 +44,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         setInstitutions();
         setUserCountLabel();
         setUsersTable();
+        setInstSummary();
         setReducedBalanceCount();
         setInstitutionCountLabel();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -130,6 +133,45 @@ public class AdminDashboard extends javax.swing.JFrame {
             users_table.setModel(model);
         }
     }
+    public void setInstSummary(){
+        ArrayList<AssetsCount> list=user.getInstByAssets();
+        if(list==null){
+            System.out.println("Error");
+        }else{
+            i1.setText(list.get(0).getName());
+            i2.setText(list.get(1).getName());
+            i3.setText(list.get(2).getName());
+            i4.setText(list.get(3).getName());
+            i5.setText(list.get(4).getName());
+//            i1.setText(list.get(0).getName());
+
+            v1.setText(Integer.toString(list.get(0).getCount()));            
+            v2.setText(Integer.toString(list.get(1).getCount()));
+            v3.setText(Integer.toString(list.get(2).getCount()));
+            v4.setText(Integer.toString(list.get(3).getCount()));
+            v5.setText(Integer.toString(list.get(4).getCount()));
+
+        }
+    }
+    public void setLoginSummary(){
+        ArrayList <LoginSummary> list=user.getLoginSummary();
+        if(list==null){
+            System.out.println("Error");
+        }else{
+            user1.setText(list.get(0).getUsername());            
+            user2.setText(list.get(1).getUsername());
+            user3.setText(list.get(2).getUsername());
+            user4.setText(list.get(3).getUsername());
+            user5.setText(list.get(4).getUsername());
+
+            time1.setText(list.get(0).getTime());
+            time2.setText(list.get(1).getTime());
+            time3.setText(list.get(2).getTime());
+            time4.setText(list.get(3).getTime());
+            time5.setText(list.get(4).getTime());
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

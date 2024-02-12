@@ -42,6 +42,8 @@ public class SystemAdmin {
 
     
     //custom methods
+    
+    //adding institution to thhe db
     public boolean addInstitution(Institution inst){
         Connection connection=null;
         PreparedStatement pstatement=null;
@@ -88,6 +90,7 @@ public class SystemAdmin {
         }
         return result;
     }
+    //getting added institution from db
     public ArrayList<Institution> getInstitutions(){
         Connection connection=null;
         ResultSet resultset;
@@ -139,6 +142,7 @@ public class SystemAdmin {
         }
         return list;
     }
+    //updating added institution
     public boolean updateInstitution(Institution inst){
         Connection connection=null;
         PreparedStatement pstatement=null;
@@ -186,6 +190,7 @@ public class SystemAdmin {
         }
         return result;
     }
+    //deactivating inst
     public boolean deactivateInstitution(int id){
          Connection connection=null;
         PreparedStatement pstatement=null;
@@ -224,6 +229,8 @@ public class SystemAdmin {
         }
         return result;
     }
+    
+    //adding users
     public boolean addUser(User user){
         Connection connection=null;
         PreparedStatement pstatement=null;
@@ -269,6 +276,7 @@ public class SystemAdmin {
         }
         return result;
     }
+    //getting added users
     public ArrayList<User> getUsers(){
         Connection connection=null;
         PreparedStatement pstatement=null;
@@ -322,6 +330,7 @@ public class SystemAdmin {
         }
         return list;
     }
+    //updating entered users
     public boolean updateUser(User user){
          Connection connection=null;
         PreparedStatement pstatement=null;
@@ -366,6 +375,7 @@ public class SystemAdmin {
         }
         return result;
     }
+    //counting all the added users in the susyem
     public int getUsersCount(){
         Connection connection=null;
         PreparedStatement pstatement=null;
@@ -406,6 +416,7 @@ public class SystemAdmin {
         }
         return count;
     }
+    //counting institutions
     public int getInstitutionCount(){
         Connection connection=null;
         PreparedStatement pstatement=null;
@@ -446,6 +457,7 @@ public class SystemAdmin {
         }
         return count;
     }
+    //calculating assets
     public int reducedBalanceCount(){
         Connection connection=null;
         PreparedStatement pstatement=null;
@@ -488,6 +500,97 @@ public class SystemAdmin {
         return count;
     }
     
+    //getting assets by institution
+    public ArrayList<AssetsCount> getInstByAssets(){
+        Connection connection=null;
+        PreparedStatement pstatement=null;
+        ResultSet resultset;
+        ArrayList<AssetsCount> list=null;
+        try{
+            Class.forName(JDBC_DRIVER);
+            connection=DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
+            String sql="SELECT i.id as institition_id, i.name as institition_name,COUNT(a.id) as asset_count FROM institition as i LEFT JOIN department as d ON i.id=d.inst_id LEFT JOIN asset AS a ON d.id=a.department_id GROUP BY i.id,i.name ORDER BY asset_count DESC";
+            pstatement=connection.prepareStatement(sql);
+            resultset=pstatement.executeQuery();
+            list=new ArrayList<>();
+            while(resultset.next()){
+                AssetsCount ac;
+                ac = new AssetsCount(resultset.getString(2),resultset.getInt(3));
+                list.add(ac);
+            }
+            resultset.close();
+            pstatement.close();
+            connection.close();
+            
+            
+        }catch(SQLException e){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,"SQL error",e);
+        }catch(ClassNotFoundException ex){
+            Logger.getLogger(SystemAdmin.class.getName()).log(Level.SEVERE,null,ex);
+        }finally{
+            if(pstatement!=null){
+                try{
+                    pstatement.close();
+                }catch(SQLException e){
+                    Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,e);
+                }
+            }
+            if(connection!=null){
+                try{
+                    connection.close();
+                }catch(SQLException e){
+                    Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,e);
+                }
+            }
+        }
+        return list;
+    }
+    
+    //login summary
+    public ArrayList <LoginSummary> getLoginSummary(){
+        Connection connection=null;
+        PreparedStatement pstatement=null;
+        ResultSet resultset;
+        ArrayList<LoginSummary> list=null;
+        try{
+            Class.forName(JDBC_DRIVER);
+            connection=DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
+            String sql="SELECT email,last_login FROM users ORDER BY last_login DESC LIMIT 5;";
+            pstatement=connection.prepareStatement(sql);
+            resultset=pstatement.executeQuery();
+            list=new ArrayList<>();
+            while(resultset.next()){
+                LoginSummary ls ;
+                ls=new LoginSummary(resultset.getString(1),resultset.getString(2));
+                list.add(ls);
+            }
+            resultset.close();
+            pstatement.close();
+            connection.close();
+            
+            
+        }catch(SQLException e){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,"SQL error",e);
+        }catch(ClassNotFoundException ex){
+            Logger.getLogger(SystemAdmin.class.getName()).log(Level.SEVERE,null,ex);
+        }finally{
+            if(pstatement!=null){
+                try{
+                    pstatement.close();
+                }catch(SQLException e){
+                    Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,e);
+                }
+            }
+            if(connection!=null){
+                try{
+                    connection.close();
+                }catch(SQLException e){
+                    Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,e);
+                }
+            }
+        }
+        return list;
+    }
     public int getId() {
         return id;
     }

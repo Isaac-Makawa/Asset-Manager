@@ -21,6 +21,7 @@ mw\gov\agriculture\assestmanager\forms\AdminDashboard$8.class
 mw\gov\agriculture\assestmanager\forms\UpdateAsset.class
 mw\gov\agriculture\assestmanager\forms\AdminDashboard$2.class
 cit\assetmanager\Institutionsview.class
+mw\gov\agriculture\assestmanager\models\AssetsCount.class
 mw\gov\agriculture\assestmanager\forms\AdminDashboard$9.class
 cit\assetmanager\admindashboard$1.class
 cit\assetmanager\login$1.class
@@ -50,6 +51,7 @@ mw\gov\agriculture\assestmanager\models\DepartmentAdmin.class
 mw\gov\agriculture\assestmanager\forms\InstitutionDashboard$1.class
 cit\assetmanager\Institutionsview$2.class
 mw\gov\agriculture\assestmanager\forms\InstitutionDashboard$6.class
+mw\gov\agriculture\assestmanager\models\LoginSummary.class
 mw\gov\agriculture\assestmanager\forms\UpdateInstitutions.class
 mw\gov\agriculture\assestmanager\forms\DepartmentDashboard$4.class
 mw\gov\agriculture\assestmanager\forms\InstitutionDashboard.class
