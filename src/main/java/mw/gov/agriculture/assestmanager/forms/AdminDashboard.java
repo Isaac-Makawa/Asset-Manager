@@ -6,6 +6,9 @@
 package mw.gov.agriculture.assestmanager.forms;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
@@ -15,8 +18,16 @@ import mw.gov.agriculture.assestmanager.helpers.ComboBoxItem;
 import mw.gov.agriculture.assestmanager.models.AssetsCount;
 import mw.gov.agriculture.assestmanager.models.Institution;
 import mw.gov.agriculture.assestmanager.models.LoginSummary;
+import mw.gov.agriculture.assestmanager.models.Report;
 import mw.gov.agriculture.assestmanager.models.SystemAdmin;
 import mw.gov.agriculture.assestmanager.models.User;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *
@@ -45,6 +56,8 @@ public class AdminDashboard extends javax.swing.JFrame {
         setUserCountLabel();
         setUsersTable();
         setInstSummary();
+        setLoginSummary();
+        setReportChart();
         setReducedBalanceCount();
         setInstitutionCountLabel();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -172,6 +185,38 @@ public class AdminDashboard extends javax.swing.JFrame {
         }
     }
     
+    public void setReportChart(){
+        ArrayList <Report> list=user.getReport();
+        if(list==null){
+            System.out.println("Error");
+        }else{
+            DefaultCategoryDataset dataset=new DefaultCategoryDataset();
+           for (Report report : list) {
+            // Assuming getScore(), getCategory(), and getDepartment() are appropriate getter methods
+            dataset.addValue(report.getScore(), "Makawa", report.getDepartment());
+        }
+            JFreeChart chart = ChartFactory.createBarChart(
+                    "Asset Distribution",
+                    "Department",
+                    "Asset Count",
+                    dataset,
+                    PlotOrientation.VERTICAL,
+                    false,
+                    false,
+                    false
+            );
+            chart.setBackgroundPaint(Color.white);
+            CategoryPlot plot = chart.getCategoryPlot();
+            BarRenderer renderer = (BarRenderer) plot.getRenderer();
+            renderer.setMaximumBarWidth(1);
+            plot.setBackgroundPaint(Color.white);
+
+            ChartPanel chartPanel = new ChartPanel(chart);
+            chartPanel.setPreferredSize(new Dimension(500, 400));
+            statReportChart.setLayout(new BorderLayout());
+            statReportChart.add(chartPanel, BorderLayout.CENTER);
+        }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -183,7 +228,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         institution_btn = new javax.swing.JButton();
         users_btn = new javax.swing.JButton();
         reports_btn = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        logout_btn = new javax.swing.JButton();
         dashboard_btn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         dashboardContainer = new javax.swing.JPanel();
@@ -273,6 +318,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         statSystemusage2 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         chart2 = new javax.swing.JPanel();
+        statReportChart = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("admindashboard"); // NOI18N
@@ -319,14 +365,14 @@ public class AdminDashboard extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/exit.png"))); // NOI18N
-        jButton4.setText("Logout");
-        jButton4.setActionCommand("");
-        jButton4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        logout_btn.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        logout_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/exit.png"))); // NOI18N
+        logout_btn.setText("Logout");
+        logout_btn.setActionCommand("");
+        logout_btn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        logout_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                logout_btnActionPerformed(evt);
             }
         });
 
@@ -361,7 +407,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                     .addComponent(users_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(institution_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(dashboard_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(logout_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         backgroundPanelLayout.setVerticalGroup(
@@ -382,7 +428,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(reports_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 248, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logout_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(45, 45, 45))
         );
 
@@ -1159,18 +1205,30 @@ public class AdminDashboard extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        javax.swing.GroupLayout statReportChartLayout = new javax.swing.GroupLayout(statReportChart);
+        statReportChart.setLayout(statReportChartLayout);
+        statReportChartLayout.setHorizontalGroup(
+            statReportChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        statReportChartLayout.setVerticalGroup(
+            statReportChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 316, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout dashReportsLayout = new javax.swing.GroupLayout(dashReports);
         dashReports.setLayout(dashReportsLayout);
         dashReportsLayout.setHorizontalGroup(
             dashReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dashReportsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(dashReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(dashReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(dashReportsLayout.createSequentialGroup()
                         .addComponent(statSystemusage1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(36, 36, 36)
                         .addComponent(statSystemusage2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(statReportChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(330, Short.MAX_VALUE))
         );
         dashReportsLayout.setVerticalGroup(
@@ -1183,7 +1241,9 @@ public class AdminDashboard extends javax.swing.JFrame {
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(50, 50, 50)
                         .addComponent(statSystemusage1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(795, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(statReportChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         dashboardContainer.add(dashReports, "card5");
@@ -1380,9 +1440,9 @@ public class AdminDashboard extends javax.swing.JFrame {
         
     }//GEN-LAST:event_users_tableMousePressed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void logout_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logout_btnActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_logout_btnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1413,7 +1473,6 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JButton institution_btn;
     private javax.swing.JButton institution_save_btn;
     private javax.swing.JTabbedPane instutionsPane;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1448,11 +1507,13 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JButton logout_btn;
     private javax.swing.JPanel new_institutions;
     private javax.swing.JPanel new_user;
     private javax.swing.JButton reports_btn;
     private javax.swing.JLabel sm_count;
     private javax.swing.JPanel statInstututions;
+    private javax.swing.JPanel statReportChart;
     private javax.swing.JPanel statSystemusage;
     private javax.swing.JPanel statSystemusage1;
     private javax.swing.JPanel statSystemusage2;

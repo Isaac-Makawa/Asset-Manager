@@ -6,6 +6,7 @@ mw\gov\agriculture\assestmanager\models\SystemAdmin.class
 cit\assetmanager\Assetmanager.class
 mw\gov\agriculture\assestmanager\forms\AdminDashboard$7.class
 mw\gov\agriculture\assestmanager\models\Institution.class
+mw\gov\agriculture\assestmanager\models\Report.class
 mw\gov\agriculture\assestmanager\forms\InstitutionDashboard$8.class
 mw\gov\agriculture\assestmanager\forms\LoginForm$1.class
 mw\gov\agriculture\assestmanager\forms\AdminDashboard$4.class

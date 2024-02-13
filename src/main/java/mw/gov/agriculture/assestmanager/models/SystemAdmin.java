@@ -591,6 +591,56 @@ public class SystemAdmin {
         }
         return list;
     }
+    
+    
+    public ArrayList <Report> getReport(){
+        Connection connection=null;
+            PreparedStatement pstatement=null;
+            ResultSet resultset;
+            ArrayList<Report> list=null;
+        try{
+            Class.forName(JDBC_DRIVER);
+            connection=DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
+            String sql="SELECT COUNT(asset.id) AS asset_count, department.name AS department_name FROM asset, department WHERE asset.department_id = department.id GROUP BY department_name; ";
+            pstatement=connection.prepareStatement(sql);
+            resultset=pstatement.executeQuery();
+            
+            list= new ArrayList<>();
+            while(resultset.next()){
+                Report report;
+                report=new Report(resultset.getInt(1),resultset.getString(2));
+                list.add(report);
+            }
+            resultset.close();
+            pstatement.close();
+            connection.close();
+            return list;
+            
+            
+        }catch(SQLException e){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,"SQL error",e);
+        }catch(ClassNotFoundException ex){
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,ex);
+        }finally{
+            if(pstatement!=null){
+                try{
+                    pstatement.close();
+                }catch(SQLException e){
+                    Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,e);
+                }
+            }
+            if(connection!=null){
+                try{
+                    connection.close();
+                }catch(SQLException e){
+                    Logger.getLogger(User.class.getName()).log(Level.SEVERE,null,e);
+                }
+            }
+        }
+        return list;
+    }
+    
+    
     public int getId() {
         return id;
     }
