@@ -54,8 +54,7 @@ public class SystemAdmin {
             connection=DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
             String sql="INSERT INTO institition (name,location,email,address,phone,description,created,updated_at) VALUES(?,?,?,?,?,?,now(),now())";
             pstatement=connection.prepareStatement(sql);
-                        System.out.println(sql);
-                        System.out.println(pstatement);
+                      
             pstatement.setString(1,inst.getName());            
             pstatement.setString(2,inst.getLocation());
             pstatement.setString(3,inst.getEmail());
